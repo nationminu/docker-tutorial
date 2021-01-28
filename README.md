@@ -252,11 +252,11 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 ```
 
 # docker 컨테이너 기타 명령어
-> docker container stop <NAME/ID> : 실행된 컨테이너 종료
-> docker container kill <NAME/ID> : 실행된 컨테이너 강제 종료
-> docker container logs <NAME/ID> : 실행된 컨테이너 로그 확인
-> docker container inspect <NAME/ID> : 실행된 컨테이너 상세내용 확인
-> docker container stats <NAME/ID> : 실행된 컨테이너 리소스 사용률 확인
+> - docker container stop <NAME/ID> : 실행된 컨테이너 종료 
+> - docker container kill <NAME/ID> : 실행된 컨테이너 강제 종료
+> - docker container logs <NAME/ID> : 실행된 컨테이너 로그 확인
+> - docker container inspect <NAME/ID> : 실행된 컨테이너 상세내용 확인
+> - docker container stats <NAME/ID> : 실행된 컨테이너 리소스 사용률 확인
 
 # nginx tutorial
 > 컨테이너 실행 조건 : <BR>
@@ -323,6 +323,7 @@ CUSTOM BUILD NGINX
 > 2. 컨테이너에 다음과 같이 환경 변수를 설정 SERVER_NAME=http-server, .<BR>
 > 3. centons yum 명령어로 apache 를 설치. 명령어 : yum update -y , yum install httpd httpd-tools -y <BR>
 > 4. 컨테이너에서 80 포트를 노출한다.
+> 5. 컨테이너로 기본 명령어 경로를 /var/www/html 로 설정한다.
 > 5. CMD 명령어로 "/usr/sbin/httpd -D FOREGROUND" 아파치가 forground 로 실행되도록 한다.
 > 6. 빌드 이미지 이름은 my-httpd:latest 로 빌드한다.
 
