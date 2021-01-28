@@ -1,0 +1,5 @@
+From nginx:latest
+
+RUN echo "CUSTOM BUILD NGINX" > /usr/share/nginx/html/index.html
+
+EXPOSE 80

@@ -251,23 +251,84 @@ $ docker ps -a
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 ```
 
+# docker 컨테이너 기타 명령어
+> docker container stop <NAME/ID> : 실행된 컨테이너 종료
+> docker container kill <NAME/ID> : 실행된 컨테이너 강제 종료
+> docker container logs <NAME/ID> : 실행된 컨테이너 로그 확인
+> docker container inspect <NAME/ID> : 실행된 컨테이너 상세내용 확인
+> docker container stats <NAME/ID> : 실행된 컨테이너 리소스 사용률 확인
+
 # nginx tutorial
 > 컨테이너 실행 조건 : <BR>
 > 1. dockerhub 에서 nginx:latest docker 이미지를 실행 <BR>
-> 2. 프로젝트 내부의 ./nginx/html/ 소스를 nginx 컨테이너 "/var/www/html" 디렉토리로 마운트한다.<BR>
+> 2. 프로젝트 내부의 nginx/lab1 소스를 nginx 컨테이너 "/usr/share/nginx/html" 디렉토리로 마운트한다.<BR>
 > 3. nginx의 80 포트를 로컬에서 바인딩해서 80 포트로 접속할수 있게 한다 <BR>
 > 4. 컨테이너 이름은 nginx 로 설정한다 <br>
-> 5. 컨테이너는 백그라운드로 실행한다.
----
+> 5. 컨테이너는 백그라운드로 실행한다. 
+ 
+> 솔루션 확인:
 ```
 curl http://localhost
 ```
-
+---
 
 # Docker 이미지 빌드하기
 > docker build -t <이미지이름>:<이미지태그> <디렉토리경로> -f <Dockerfile이름>
 
 ## Dockerfile 만들기
 ```
-From 
+From nginx:latest
+
+RUN echo "CUSTOM BUILD NGINX" > /usr/share/nginx/html/index.html 
+
+EXPOSE 80
 ```
+> Dockerfile 내부 명령어 : <br>
+> - FROM : 생성할 이미지의 베이스가 될 이미지
+> - RUN : 명령어를 실행
+> - CMD : 컨테이너가 시작될 때마다 실행할 명령어
+> - ENTRYPOINT : cmd와 동일하게 컨테이너가 시작될 때 수행할 명령
+> - ENV : 환경 변수 설정
+> - EXPOSE : 빌드로 생성된 이미지에서 노출할 포트를 설정
+> - WORKDIR : 명령어를 실행할 디렉터리 지정
+
+## Docker 빌드하기
+```
+$ docker build -t my-nginx . -f Dockerfile.nginx
+Sending build context to Docker daemon  74.24kB
+Step 1/2 : From nginx:latest
+ ---> f6d0b4767a6c
+Step 2/2 : RUN echo "CUSTOM BUILD NGINX" > /usr/share/nginx/html/index.html
+ ---> Running in 6090247c8ade
+Removing intermediate container 6090247c8ade
+ ---> 845e3cdc4636
+Successfully built 845e3cdc4636
+Successfully tagged my-nginx:latest
+
+$ docker images
+REPOSITORY   TAG       IMAGE ID       CREATED         SIZE
+my-nginx     latest    845e3cdc4636   2 minutes ago   133MB
+nginx        latest    f6d0b4767a6c   2 weeks ago     133MB
+
+$ docker run -d -p "80:80" my-nginx:latest
+
+$ curl http://localhost
+CUSTOM BUILD NGINX
+```
+
+
+# docker build tutorial
+> 컨테이너 빌드 조건 : <BR>
+> 1. dockerhub 에서 centos:7 를 베이스 이미지로 빌드 <BR>
+> 2. 컨테이너에 다음과 같이 환경 변수를 설정 SERVER_NAME=http-server, .<BR>
+> 3. centons yum 명령어로 apache 를 설치. 명령어 : yum update -y , yum install httpd httpd-tools -y <BR>
+> 4. 컨테이너에서 80 포트를 노출한다.
+> 5. CMD 명령어로 "/usr/sbin/httpd -D FOREGROUND" 아파치가 forground 로 실행되도록 한다.
+> 6. 빌드 이미지 이름은 my-httpd:latest 로 빌드한다.
+
+> 컨테이너 실행 조건 : <BR>
+> 1. my-httpd:latest 이미지를 실행 <BR>
+> 2. 프로젝트 내부의 nginx/lab2 소스를 컨테이너 "/var/www/html" 디렉토리로 마운트한다.<BR>
+> 3. nginx의 80 포트를 로컬에서 바인딩해서 80 포트로 접속할수 있게 한다 <BR>
+> 4. 컨테이너 이름은 httpd 로 설정한다 <br>
+> 5. 컨테이너는 백그라운드로 실행한다. 

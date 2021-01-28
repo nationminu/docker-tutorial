@@ -1,0 +1,37 @@
+<HTML>
+<HEAD>
+    <TITLE>nginx docker tutorial solution</TITLE>
+</HEAD>
+<BODY>
+    <H1>nginx docker tutorial solution</H1>
+
+    <h2>Dockerfile</h2> 
+    <pre>
+        FROM centos:7
+
+        ENV SERVER_NAME=http-server
+
+        RUN yum update -y && yum install httpd httpd-tools -y
+
+        EXPOSE  80
+
+        CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
+    </pre>
+
+    <h2>docker build</h2> 
+    <pre>
+        docker build -t my-httpd:latest . -f Dockerfile
+    </pre>
+
+    <h2>docker run</h2>
+    <pre>
+        docker run -d --name httpd -p "80:80" -v "${PWD}/nginx/lab2:/var/www/html" my-httpd:latest
+    </pre>
+
+    <h2>결과확인:</h2> 
+    <pre>
+        curl http://localhost
+    </pre>
+</BODY>
+
+</HTML>
