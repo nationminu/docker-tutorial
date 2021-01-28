@@ -261,7 +261,7 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 # nginx tutorial
 > 컨테이너 실행 조건 : <BR>
 > 1. dockerhub 에서 nginx:latest docker 이미지를 실행 <BR>
-> 2. 프로젝트 내부의 nginx/lab1 소스를 nginx 컨테이너 "/usr/share/nginx/html" 디렉토리로 마운트한다.<BR>
+> 2. 프로젝트 내부의 labs/lab1 소스를 nginx 컨테이너 "/usr/share/nginx/html" 디렉토리로 마운트한다.<BR>
 > 3. nginx의 80 포트를 로컬에서 바인딩해서 80 포트로 접속할수 있게 한다 <BR>
 > 4. 컨테이너 이름은 nginx 로 설정한다 <br>
 > 5. 컨테이너는 백그라운드로 실행한다. 
@@ -275,11 +275,16 @@ curl http://localhost
 # Docker 이미지 빌드하기
 > docker build -t <이미지이름>:<이미지태그> <디렉토리경로> -f <Dockerfile이름>
 
-## Dockerfile 만들기
+## Dockerfile.nginx 만들기
+> dockerhub 에서 nginx:latest 이미지에 새로운 html 파일을 성성하여 새로운 my-nginx 이미지를 만드는 예제.
 ```
-From nginx:latest
+FROM nginx:latest
 
-RUN echo "CUSTOM BUILD NGINX" > /usr/share/nginx/html/index.html 
+ENV SERVER=nginx
+
+RUN echo "CUSTOM BUILD NGINX" > /usr/share/nginx/html/index.html
+
+WORKDIR  /usr/share/nginx/html
 
 EXPOSE 80
 ```
@@ -329,7 +334,7 @@ CUSTOM BUILD NGINX
 
 > 컨테이너 실행 조건 : <BR>
 > 1. my-httpd:latest 이미지를 실행 <BR>
-> 2. 프로젝트 내부의 nginx/lab2 소스를 컨테이너 "/var/www/html" 디렉토리로 마운트한다.<BR>
+> 2. 프로젝트 내부의 labs/lab2 소스를 컨테이너 "/var/www/html" 디렉토리로 마운트한다.<BR>
 > 3. nginx의 80 포트를 로컬에서 바인딩해서 80 포트로 접속할수 있게 한다 <BR>
 > 4. 컨테이너 이름은 httpd 로 설정한다 <br>
 > 5. 컨테이너는 백그라운드로 실행한다. 
@@ -346,4 +351,45 @@ SERVER_NAME=http-server
 [root@708fa182e0bb /]# env | grep SERVER_NAME
 SERVER_NAME=http-server
 [root@708fa182e0bb /]#
+```
+
+
+# docker-compose
+> Docker compose는 yaml 파일로 여러 개의 도커컨테이너의 정의를 작성하여 한 번에 많은 컨테이너들을 작동시키고 관리할 수 있는 툴.
+```
+sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+# docker-compose.yaml
+```---
+version: "3.8"
+services: 
+    nginx:
+        image: "my-nginx:latest"
+        ports:
+            - "80:80"
+        environment:
+            TZ: "Asia/Seoul"
+            SERVER: nginx
+        volumes:
+            - ./labs/labs1/:/usr/share/nginx/html/
+
+    httpd:
+        image: "my-httpd:latest"
+        ports:
+            - "81:80"
+        environment:
+            TZ: "Asia/Seoul"
+            SERVER: httpd
+        volumes:
+            - ./labs/labs2/:/var/www/html/            
+```
+
+# docker-compose 실행
+> docker-compose up [-d : 백그라운드 실행]
+```
+$ docker-compose up -d
+$ docker-compose ps
 ```

@@ -1,0 +1,22 @@
+---
+version: "3.8"
+services: 
+    nginx:
+        image: "my-nginx:latest"
+        ports:
+            - "80:80"
+        environment:
+            TZ: "Asia/Seoul"
+            SERVER: nginx
+        volumes:
+            - ./labs/labs1/:/usr/share/nginx/html/
+
+    httpd:
+        image: "my-httpd:latest"
+        ports:
+            - "81:80"
+        environment:
+            TZ: "Asia/Seoul"
+            SERVER: httpd
+        volumes:
+            - ./labs/labs2/:/var/www/html/            

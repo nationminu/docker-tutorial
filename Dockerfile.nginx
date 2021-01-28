@@ -1,5 +1,9 @@
-From nginx:latest
+FROM nginx:latest
+
+ENV SERVER=nginx
 
 RUN echo "CUSTOM BUILD NGINX" > /usr/share/nginx/html/index.html
+
+WORKDIR  /usr/share/nginx/html
 
 EXPOSE 80

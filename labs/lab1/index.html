@@ -1,0 +1,20 @@
+<HTML>
+<HEAD>
+    <TITLE>nginx docker tutorial solution</TITLE>
+</HEAD>
+<BODY>
+    <H1>nginx docker tutorial solution</H1>
+
+    <h2>명령어:</h2> 
+    <pre>
+        docker pull nginx:latest
+        docker run -d --name nginx -p "80:80" -v "${PWD}/labs/lab1:/usr/share/nginx/html" nginx:latest
+    </pre>
+
+    <h2>결과확인:</h2> 
+    <pre>
+        curl http://localhost
+    </pre>
+</BODY>
+
+</HTML>
