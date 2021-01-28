@@ -332,3 +332,17 @@ CUSTOM BUILD NGINX
 > 3. nginx의 80 포트를 로컬에서 바인딩해서 80 포트로 접속할수 있게 한다 <BR>
 > 4. 컨테이너 이름은 httpd 로 설정한다 <br>
 > 5. 컨테이너는 백그라운드로 실행한다. 
+
+
+# 컨티이너에서 명령어 실행/접속하기
+> docker exec <컨테이너이름/ID> <명령어> <br>
+```
+$ docker exec httpd env|grep SERVER_NAME
+SERVER_NAME=http-server
+```
+> -it : interactive terminal 접속
+```
+[root@708fa182e0bb /]# env | grep SERVER_NAME
+SERVER_NAME=http-server
+[root@708fa182e0bb /]#
+```
