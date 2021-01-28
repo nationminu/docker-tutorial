@@ -363,33 +363,55 @@ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 # docker-compose.yaml
-```---
+```
+---
 version: "3.8"
-services: 
-    nginx:
-        image: "my-nginx:latest"
+services:     
+
+    apache-php:
+        image: "php:7-apache"
         ports:
             - "80:80"
         environment:
             TZ: "Asia/Seoul"
-            SERVER: nginx
+            SERVER: httpd
+            MYSQL_HOST: mariadb:3306
+            MYSQL_DATABASE: sample
+            MYSQL_USER: sample
+            MYSQL_PASSWORD: sample 
         volumes:
-            - ./labs/labs1/:/usr/share/nginx/html/
+            - ./labs/lab3/:/var/www/html/     
+        command:
+            - /bin/sh
+            - -c
+            - |
+                docker-php-ext-install mysqli 
+                echo "extension installed.....starting php........................................"
+                docker-php-entrypoint apache2-foreground           
 
-    httpd:
-        image: "my-httpd:latest"
+    mariadb:
+        image: mariadb:10.5
         ports:
-            - "81:80"
+            - "3306:3306"
         environment:
             TZ: "Asia/Seoul"
-            SERVER: httpd
-        volumes:
-            - ./labs/labs2/:/var/www/html/            
+            SERVER: mariadb
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: sample
+            MYSQL_USER: sample
+            MYSQL_PASSWORD: sample     
 ```
 
 # docker-compose 실행
 > docker-compose up [-d : 백그라운드 실행]
 ```
 $ docker-compose up -d
+Starting docker-tutorial_httpd_1 ... done
+Starting docker-tutorial_nginx_1 ... done
+
 $ docker-compose ps
+         Name                        Command               State         Ports
+-------------------------------------------------------------------------------------
+docker-tutorial_httpd_1   /usr/sbin/httpd -D FOREGROUND    Up      0.0.0.0:81->80/tcp
+docker-tutorial_nginx_1   /docker-entrypoint.sh ngin ...   Up      0.0.0.0:80->80/tcp
 ```

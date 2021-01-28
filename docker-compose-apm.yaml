@@ -1,0 +1,36 @@
+---
+version: "3.8"
+services:     
+
+    apache-php:
+        image: "php:7-apache"
+        ports:
+            - "80:80"
+        environment:
+            TZ: "Asia/Seoul"
+            SERVER: httpd
+            MYSQL_HOST: mariadb:3306
+            MYSQL_DATABASE: sample
+            MYSQL_USER: sample
+            MYSQL_PASSWORD: sample 
+        volumes:
+            - ./labs/lab3/:/var/www/html/     
+        command:
+            - /bin/sh
+            - -c
+            - |
+                docker-php-ext-install mysqli 
+                echo "extension installed.....starting php-fpm........................................"
+                docker-php-entrypoint apache2-foreground           
+
+    mariadb:
+        image: mariadb:10.5
+        ports:
+            - "3306:3306"
+        environment:
+            TZ: "Asia/Seoul"
+            SERVER: mariadb
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: sample
+            MYSQL_USER: sample
+            MYSQL_PASSWORD: sample 
