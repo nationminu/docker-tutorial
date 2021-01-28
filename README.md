@@ -363,43 +363,28 @@ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 # docker-compose.yaml
-```
----
+```---
 version: "3.8"
-services:     
-
-    apache-php:
-        image: "php:7-apache"
+services: 
+    nginx:
+        image: "my-nginx:latest"
         ports:
             - "80:80"
         environment:
             TZ: "Asia/Seoul"
-            SERVER: httpd
-            MYSQL_HOST: mariadb:3306
-            MYSQL_DATABASE: sample
-            MYSQL_USER: sample
-            MYSQL_PASSWORD: sample 
+            SERVER: nginx
         volumes:
-            - ./labs/lab3/:/var/www/html/     
-        command:
-            - /bin/sh
-            - -c
-            - |
-                docker-php-ext-install mysqli 
-                echo "extension installed.....starting php........................................"
-                docker-php-entrypoint apache2-foreground           
+            - ./labs/labs1/:/usr/share/nginx/html/
 
-    mariadb:
-        image: mariadb:10.5
+    httpd:
+        image: "my-httpd:latest"
         ports:
-            - "3306:3306"
+            - "81:80"
         environment:
             TZ: "Asia/Seoul"
-            SERVER: mariadb
-            MYSQL_ROOT_PASSWORD: password
-            MYSQL_DATABASE: sample
-            MYSQL_USER: sample
-            MYSQL_PASSWORD: sample     
+            SERVER: httpd
+        volumes:
+            - ./labs/labs2/:/var/www/html/            
 ```
 
 # docker-compose 실행
@@ -414,4 +399,17 @@ $ docker-compose ps
 -------------------------------------------------------------------------------------
 docker-tutorial_httpd_1   /usr/sbin/httpd -D FOREGROUND    Up      0.0.0.0:81->80/tcp
 docker-tutorial_nginx_1   /docker-entrypoint.sh ngin ...   Up      0.0.0.0:80->80/tcp
+```
+
+
+# docker-compose 파일을 이용한 실행
+> PHP > mariadb 연동 예제
+```
+$ docker-compose -f docker-compose-apm.yaml up -d
+
+$ docker-compose -f docker-compose-apm.yaml ps
+            Name                          Command               State           Ports
+----------------------------------------------------------------------------------------------
+docker-tutorial_apache-php_1   docker-php-entrypoint /bin ...   Up      0.0.0.0:80->80/tcp
+docker-tutorial_mariadb_1      docker-entrypoint.sh mysqld      Up      0.0.0.0:3306->3306/tcp
 ```
