@@ -4,7 +4,7 @@
 ![Docker](https://d1.awsstatic.com/Developer%20Marketing/containers/monolith_2-VM-vs-Containers.78f841efba175556d82f64d1779eb8b725de398d.png)
 
 
-![Docker](https://jfrog--c.documentforce.com/servlet/servlet.ImageServer?id=0151r000006uDFc&oid=00D20000000M3v0&lastMod=1584523377000)
+![Docker](https://docs.docker.com/engine/images/architecture.svg)
 
 # Docker 설치
 https://docs.docker.com/engine/install/
