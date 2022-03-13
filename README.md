@@ -3,6 +3,26 @@
 # Docker(Container) 란
 ![Docker](https://d1.awsstatic.com/Developer%20Marketing/containers/monolith_2-VM-vs-Containers.78f841efba175556d82f64d1779eb8b725de398d.png)
 
+## namespace 
+
+> VM에서는 각 게스트 머신별로 독립적인 공간을 제공하고 서로가 충돌하지 않도록 하는 기능을 갖고 있습니다.
+
+- mnt (파일시스템 마운트): 호스트 파일시스템에 구애받지 않고 독립적으로 파일시스템을 마운트하거나 언마운트 가능
+- pid (프로세스): 독립적인 프로세스 공간을 할당
+- net (네트워크): namespace간에 network 충돌 방지 (중복 포트 바인딩 등)
+- ipc (SystemV IPC): 프로세스간의 독립적인 통신통로 할당
+- uts (hostname): 독립적인 hostname 할당
+- user (UID): 독립적인 사용자 할당
+
+## cgroups
+> cgroups(Control Groups)는 자원(resources)에 대한 제어를 가능하게 해주는 리눅스 커널의 기능입니다.  
+
+- 메모리
+- CPU
+- I/O
+- 네트워크
+- device 노드(/dev/)
+
 # Docker Architecture
 
 ![Docker](https://docs.docker.com/engine/images/architecture.svg)
@@ -420,3 +440,9 @@ $ docker-compose -f docker-compose-apm.yaml ps
 docker-tutorial_apache-php_1   docker-php-entrypoint /bin ...   Up      0.0.0.0:80->80/tcp
 docker-tutorial_mariadb_1      docker-entrypoint.sh mysqld      Up      0.0.0.0:3306->3306/tcp
 ```
+    
+    
+# Referer
+- https://tech.ssut.me/what-even-is-a-container/
+- https://docs.docker.com/get-started/
+    
