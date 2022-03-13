@@ -29,6 +29,20 @@
 
 # Docker 설치
 https://docs.docker.com/engine/install/
+
+> bridge 네트워크를 통해 송수신되는 패킷이 iptables 설정을 우회
+```
+cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+br_netfilter
+EOF
+
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+
+sysctl -p
+```
 > Centos/RHEL
 ```
 $ sudo yum install -y yum-utils
